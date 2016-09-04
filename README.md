@@ -40,7 +40,7 @@ The example above will make TaskQ execute `POST` request to `https://yourapp.her
 **Always** remember to check `Authorization` header; otherwise somebody else than TaskQ might be sending reqests to you! 
 The SDK provides convenience method to do that:
 
-```javascript
+```java
 TaskQ taskQ = new TaskQ();
 ...
 taskQ.verify(authorizationHeader);
@@ -48,7 +48,7 @@ taskQ.verify(authorizationHeader);
 
 Example using [Spring](https://spring.io/):
 
-```javascript
+```java
 @RestController
 @RequestMapping("/tasks")
 public class TasksController {
