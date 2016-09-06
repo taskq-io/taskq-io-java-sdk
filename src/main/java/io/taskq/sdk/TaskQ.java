@@ -19,7 +19,7 @@ public final class TaskQ {
 	private CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	public TaskQ() {
-		this.apiKey = System.getProperty(TASKQ_API_KEY_ENV_PROPERTY);
+		this.apiKey = System.getenv(TASKQ_API_KEY_ENV_PROPERTY);
 	}
 
 	public TaskQ setApiKey(final String apiKey) {
