@@ -25,7 +25,7 @@ TaskQ taskQ = new TaskQ();
 taskQ.setApiKey("1o2TzlloDCZK8PioXjocb5xm1A8GU5ItVR9u0ND682cKjy1GBH");
 
 taskQ.useUrl("/tasks/sync_user")
-	 .withParam("user_id", "L1mxeDbCIdv7COIUjuJ9 value")
+	 .withParam("user_id", "L1mxeDbCIdv7COIUjuJ9")
 	 .queue();
 ```
 
