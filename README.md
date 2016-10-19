@@ -1,5 +1,7 @@
 This is [TaskQ.io](https://taskq.io) SDK for Java.
 
+This page explains how to use the SDK, but does not discuss all aspects of TaskQ.io. Please visit [TaskQ.io](https://taskq.io) to get a full picture.
+
 # Installation
 
 To install the SDK in your project using Maven, use:
@@ -19,7 +21,7 @@ To install the SDK in your project using Maven, use:
 ```java
 TaskQ taskQ = new TaskQ();
 
-// Optional - TaskQ will default to System.getProperty("TASKQ_API_KEY") as set by Heroku
+// Optional - TaskQ will default to System.getenv("TASKQ_API_KEY") as set by Heroku
 taskQ.setApiKey("1o2TzlloDCZK8PioXjocb5xm1A8GU5ItVR9u0ND682cKjy1GBH");
 
 taskQ.useUrl("/tasks/sync_user")
@@ -37,16 +39,16 @@ The example above will make TaskQ execute `POST` request to `https://yourapp.her
 }
 ```
 
-**Always** remember to check `Authorization` header; otherwise somebody else than TaskQ might be sending reqests to you! 
+While handling tasks, **always** remember to check `Authorization` header; otherwise somebody else than TaskQ.io might be sending reqests to you! 
 The SDK provides convenience method to do that:
 
 ```java
-TaskQ taskQ = new TaskQ();
-...
 taskQ.verify(authorizationHeader);
 ```
 
-Example using [Spring](https://spring.io/):
+`verify` method will throw an exception in case of invalid `Authorization` header.
+
+Below is an example of running tasks using [Spring](https://spring.io/):
 
 ```java
 @RestController
@@ -81,3 +83,5 @@ public class UserIdDTO {
 	}
 }
 ```
+
+Your feedback is very welcome! Please use Github's issue tracker to report issues, request features, etc.
