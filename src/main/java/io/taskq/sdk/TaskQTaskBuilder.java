@@ -7,7 +7,7 @@ public final class TaskQTaskBuilder {
 
 	private final TaskQ taskQ;
 	private final String url;
-	private final Map<String, String> params = new HashMap<>();
+	private final Map<String, String> params = new HashMap<String, String>();
 
 	TaskQTaskBuilder(final TaskQ taskQ, final String url) {
 		this.taskQ = taskQ;

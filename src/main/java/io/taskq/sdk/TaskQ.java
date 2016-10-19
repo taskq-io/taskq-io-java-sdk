@@ -8,6 +8,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -17,9 +18,12 @@ public final class TaskQ {
 
 	private String apiKey;
 	private CloseableHttpClient httpClient = HttpClients.createDefault();
+	private final String userAgent;
 
 	public TaskQ() {
-		this.apiKey = System.getenv(TASKQ_API_KEY_ENV_PROPERTY);
+		apiKey = System.getenv(TASKQ_API_KEY_ENV_PROPERTY);
+		final String version = getClass().getPackage().getImplementationVersion();
+		userAgent = null == version ? "Java SDK" : "Java SDK " + version.trim();
 	}
 
 	public TaskQ setApiKey(final String apiKey) {
@@ -44,8 +48,11 @@ public final class TaskQ {
 		try {
 			final HttpPost post = new HttpPost("https://taskq.io/api/v1/tasks");
 			post.addHeader("Authorization", "Bearer " + apiKey);
+			post.addHeader("User-Agent", userAgent);
 			post.setEntity(new StringEntity(buildJson(url, params), ContentType.APPLICATION_JSON));
-			try (final CloseableHttpResponse response = httpClient.execute(post)) {
+			CloseableHttpResponse response = null;
+			try {
+				response = httpClient.execute(post);
 				final int status = response.getStatusLine().getStatusCode();
 				if (status >= 200 && status < 300) {
 					return;
@@ -57,6 +64,13 @@ public final class TaskQ {
 				}
 				final JSONObject errorJson = JSONObject.fromObject(result);
 				throw new TaskQException(String.format("TaskQ.io responded with %d error: '%s' (request ID: %s)", status, errorJson.getString("message"), errorJson.getString("request_id")));
+			} finally {
+				if (null != response) {
+					try {
+						response.close();
+					} catch (final IOException ex) {
+					}
+				}
 			}
 		} catch (final Exception ex) {
 			if (ex instanceof TaskQException) {
